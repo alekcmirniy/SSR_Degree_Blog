@@ -8,7 +8,7 @@
 import { ref } from 'vue';
 import type { Todo, Meta } from 'components/models';
 import ExampleComponent from 'components/ExampleComponent.vue';
-import { api } from 'src/boot/axios';
+import { useAxiosStore } from 'src/stores/axios-store';
 
 const todos = ref<Todo[]>([
   {
@@ -37,6 +37,14 @@ const meta = ref<Meta>({
   totalCount: 1200,
 });
 
-const mydata = api.get("https://jsonplaceholder.typicode.com/posts");
-console.log(mydata);
+// const { data } = await axios.get('https://api.example.com/posts')
+// console.log(data)
+
+export const preFetch = ({ store }) => {
+  const myStore = useAxiosStore(store);
+  myStore.setData(myStore.testRequest());
+  console.log(myStore.dataStringed);
+}
+
+
 </script>
