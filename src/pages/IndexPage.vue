@@ -1,6 +1,8 @@
 <template>
     <q-page class="row items-center justify-evenly">
-        <div class="posts-container text-weight-bolder">Страница</div>
+        <div class="posts-container text-weight-bolder">
+            {{ posts }}
+        </div>
     </q-page>
 </template>
 
@@ -9,7 +11,7 @@ import { useAxiosStore } from 'src/stores/axios-store';
 import axios from 'axios';
 import { PostData } from 'src/utils/interfaces';
 
-const axiosStore = useAxiosStore();
+const { posts } = useAxiosStore();
 
 const mockPosts: PostData[] = [             //заимствовать данные не из своей базы а с чужой - сайт https://guap.ru/
     {
@@ -214,16 +216,19 @@ const mockPosts: PostData[] = [             //заимствовать данн�
     }
 ];
 
-
 defineOptions({
     async preFetch({ store }) {
-        const { fetch, setData } = useAxiosStore(store);
-        const data = await fetch("experimental_data", async () => {
-            const experimentalRes = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
+        const { fetchData, setData } = useAxiosStore(store);
+        const token = 'bc2ebae0bc2ebae0bc2ebae077bf124310bbc2ebc2ebae0d532f741804d1ca1f9603141';
+        const ownerId = -122496494;
+        const url = `https://api.vk.com/method/wall.get?owner_id=${ownerId}&count=20&access_token=${token}&v=5.199`;
+
+        const data = await fetchData("posts", async () => {
+            const experimentalRes = await axios.get(url);
             if (!experimentalRes) throw new Error('Has no response!');
             return experimentalRes;
         });
-        setData("experimental_data", data);
+        setData("posts", data);
     }
 });
 

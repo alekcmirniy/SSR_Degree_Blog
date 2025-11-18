@@ -13,11 +13,13 @@
                 <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
             </q-toolbar>
 
-            <q-tabs mobile-arrows="true" align="left">
-                <q-route-tab to="/page1" label="Page One" />
-                <q-route-tab to="/page2" label="Page Two" />
-                <q-route-tab to="/page3" label="Page Three" />
-            </q-tabs>
+            <div class="nav-container">
+                <q-tabs v-for="(route, idx) in navBarRouters" :key="idx" align="left">
+                    <q-route-tab :icon="route.meta.icon || 'home'" :to="route.path" exact />
+                </q-tabs>
+
+            </div>
+
         </q-header>
 
         <q-drawer show-if-above v-model="rightDrawerOpen" side="right" elevated>
@@ -44,12 +46,14 @@
 
 <script>
 import { ref } from 'vue'
+import { navBarRouters } from 'src/router/routes';
 
 export default {
     setup() {
         const rightDrawerOpen = ref(false)
 
         return {
+            navBarRouters,
             rightDrawerOpen,
             toggleRightDrawer() {
                 rightDrawerOpen.value = !rightDrawerOpen.value
@@ -58,3 +62,10 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.nav-container {
+    display: flex;
+    flex-direction: row;
+}
+</style>

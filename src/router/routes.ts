@@ -1,22 +1,50 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-const routes: RouteRecordRaw[] = [
+export const routes: RouteRecordRaw[] = [
     {
         path: '/',
         component: () => import('layouts/MainLayout.vue'),
         children: [
-            { path: '', name: 'Главная', component: () => import('pages/IndexPage.vue') },
+            {
+                path: '/',
+                name: 'Главная',
+                component: () => import('pages/IndexPage.vue'),
+                meta: {
+                    icon: 'home',
+                },
+            },
             {
                 path: '/shedule',
                 name: 'Расписание',
                 component: () => import('pages/ShedulePage.vue'),
+                meta: {
+                    icon: 'dashboard',
+                },
             },
             {
                 path: '/certificate',
                 name: 'Заказ справки',
                 component: () => import('pages/CertificatePage.vue'),
+                meta: {
+                    icon: 'description',
+                },
             },
-            { path: '/profile', name: 'Профиль', component: () => import('pages/ProfilePage.vue') },
+            {
+                path: '/profile',
+                name: 'Профиль',
+                component: () => import('pages/ProfilePage.vue'),
+                meta: {
+                    icon: 'account_circle',
+                },
+            },
+            {
+                path: '/logout',
+                name: 'Выйти',
+                component: () => import('pages/ProfilePage.vue'),
+                meta: {
+                    icon: 'logout',
+                },
+            },
         ],
     },
 
@@ -28,4 +56,4 @@ const routes: RouteRecordRaw[] = [
     },
 ];
 
-export default routes;
+export const navBarRouters = routes[0]?.children;

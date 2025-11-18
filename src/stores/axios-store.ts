@@ -1,15 +1,15 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const dataMap = ref<Map<string, {}>>(new Map());
 const isLoading = ref<boolean>(false);
 const error = ref<null | string>(null);
 
 export const useAxiosStore = defineStore('axios', () => {
-    const fetch = async (newVal: string, cb: () => Promise<any>) => {
+    const fetchData = async (newVal: string, cb: () => Promise<any>) => {
         try {
-            if (dataMap.value.has(newVal) && Object.keys(dataMap.value.get(newVal)!).length)
-                return dataMap.value.get(newVal) || {};
+            // if (dataMap.value.has(newVal) && Object.keys(dataMap.value.get(newVal)!).length)
+            //     return dataMap.value.get(newVal) || {};
 
             isLoading.value = true;
             error.value = null;
@@ -25,7 +25,9 @@ export const useAxiosStore = defineStore('axios', () => {
         }
     };
     const setData = (newVal: string, newData: {}) => dataMap.value.set(newVal, newData);
-    return { fetch, setData, dataMap, isLoading, error };
+
+    const posts = computed(() => dataMap.value.get('posts'));
+    return { fetchData, setData, dataMap, isLoading, error, posts };
 });
 
 if (import.meta.hot) {
